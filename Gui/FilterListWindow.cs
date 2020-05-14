@@ -8,6 +8,8 @@ namespace ToDoList.Gui
 {
     class FilterListWindow : SortListWindow
     {
+        int priorityValue = 0;
+        TaskStatus statusValue = TaskStatus.Active;
         public FilterListWindow(List<ToDoTask> toDoTaskList, char ch) : base(toDoTaskList, ch)
         {
             
@@ -17,7 +19,7 @@ namespace ToDoList.Gui
         }
         public override void ShowMenuTextBlock()
         {
-            TextBlock titleTextBlock = new TextBlock(base.Width - 40, 2, 40, new List<String> { "** Welcome To FILTER MENU ***", "P - filter by priority.", "S - filter by status.", "R - Reset filters.", "Q - Quit." });
+            TextBlock titleTextBlock = new TextBlock(base.Width - 40, 2, 40, new List<String> { "** Welcome To FILTER MENU ***", "P - filter by priority.", "S - filter by status.", "R - Reset filters.", "Q - Quit.","======================", $"Priority Value: {priorityValue}", $"Status Value: {statusValue}" });
             titleTextBlock.Render();
         }
         public override void readButtonPress()
@@ -33,11 +35,13 @@ namespace ToDoList.Gui
 
                     case ConsoleKey.P:
                         haveNotMadeAChoice = true;
-                        filterByPriority();
+                        priorityFilterValueBuilder();
+                        filterByPriority(priorityValue);
                         break;
                     case ConsoleKey.S:
                         haveNotMadeAChoice = true;
-                        filterByStatus();
+                        statusFilterValueBuilder();
+                        filterByStatus(statusValue);
                         break;
                     case ConsoleKey.R:
                         haveNotMadeAChoice = true;
@@ -47,6 +51,7 @@ namespace ToDoList.Gui
 
                     case ConsoleKey.Q:
                         listToModify.Clear();
+                        priorityValue = 0;
                         haveNotMadeAChoice = true;
                         quitLoop = true;
                         break;
@@ -54,22 +59,43 @@ namespace ToDoList.Gui
             } while (haveNotMadeAChoice != true);
         }
 
+        private void priorityFilterValueBuilder() {
+            priorityValue++;
+            if (priorityValue > 5) {
+                priorityValue = 1;
+            }
+            
+        }
 
-        private void filterByPriority()
+        private void statusFilterValueBuilder()
+        {
+            int i = (int)statusValue;
+            i++;
+            if (i > 2)
+            {
+                statusValue = (TaskStatus)0;
+            }
+            else {
+                statusValue = (TaskStatus)i;
+            }
+
+        }
+
+        private void filterByPriority(int priorityValue)
         {
 
             var result = from el in toDoTaskList
-                         where el.Priority == 5
+                         where el.Priority == priorityValue
                          select el;
 
             listToModify = result.ToList();
         }
 
-        private void filterByStatus()
+        private void filterByStatus(TaskStatus statusValue)
         {
 
             var result = from el in toDoTaskList
-                         where el.Status == "Done"
+                         where el.Status == statusValue
                          select el;
 
             listToModify = result.ToList();

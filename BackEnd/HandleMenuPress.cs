@@ -30,7 +30,7 @@ namespace ToDoList.BackEnd
         {
             SetCursorsCordinates(1, toDoTaskList);
             int taskNr = getValidTaskNumber(toDoTaskList, "Enter task number which should be set as Done: ");
-            toDoTaskList[taskNr].Status = "Done";
+            toDoTaskList[taskNr].Status = TaskStatus.Done;
         }
         public void RemoveTask(List<ToDoTask> toDoTaskList)
         {

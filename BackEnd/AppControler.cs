@@ -31,8 +31,7 @@ namespace ToDoList.BackEnd
             
             todoDataStorage = new TodoDataStorage();  /////////////////////////////
             
-            sortListWindow = new SortListWindow(todoDataStorage.ToDoList, 'S');
-            filterListWindow = new FilterListWindow(todoDataStorage.ToDoList, 'F');
+           
         }
 
         public void StartProgram()
@@ -43,12 +42,14 @@ namespace ToDoList.BackEnd
             // LoadData();
 
             todolist = todoDataStorage.ToDoList;
-           //   todolist.Add(new ToDoTask(2,"new 2")); ///////////////////////////////////////
-           //   todolist.Add(new ToDoTask(3,"new 3")); ///////////////////////////////////////
-           //   todolist.Add(new ToDoTask(4,"new 4")); ///////////////////////////////////////
-           //   todolist[1].Status = "Done";
+            sortListWindow = new SortListWindow(todolist, 'S');
+            filterListWindow = new FilterListWindow(todolist, 'F');
+            //   todolist.Add(new ToDoTask(2,"new 2")); ///////////////////////////////////////
+            //   todolist.Add(new ToDoTask(3,"new 3")); ///////////////////////////////////////
+            //   todolist.Add(new ToDoTask(4,"new 4")); ///////////////////////////////////////
+            //   todolist[1].Status = "Done";
 
-              do
+            do
               {
 
                   programWindow.Render();

@@ -6,7 +6,7 @@ namespace ToDoList.BackEnd
 {
     class ToDoTask
     {
-        public string Status { get; set; } = "Active"; //pakeisti i enumeratoriu
+        public TaskStatus Status { get; set; } = TaskStatus.Active; //pakeisti i enumeratoriu
         public int Priority { get; set; }
         public string TaskContent {get;set;}
         
@@ -18,5 +18,11 @@ namespace ToDoList.BackEnd
         }
 
         
+    }
+    enum TaskStatus { 
+        
+        Active = 0,
+        Done,
+        Expired
     }
 }
