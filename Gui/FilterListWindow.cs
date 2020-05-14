@@ -12,14 +12,19 @@ namespace ToDoList.Gui
         TaskStatus statusValue = TaskStatus.Active;
         public FilterListWindow(List<ToDoTask> toDoTaskList, char ch) : base(toDoTaskList, ch)
         {
-            
-
-            //  titleTextBlock = new TextBlock(base.Width - 40 , 2, 40, new List<String> { "N - add new task.", "C - change priority.", "D - task is done.", "S - sort by priority.", "F - filter by priority.", "Q - Quit." });
 
         }
         public override void ShowMenuTextBlock()
         {
-            TextBlock titleTextBlock = new TextBlock(base.Width - 40, 2, 40, new List<String> { "** Welcome To FILTER MENU ***", "P - filter by priority.", "S - filter by status.", "R - Reset filters.", "Q - Quit.","======================", $"Priority Value: {priorityValue}", $"Status Value: {statusValue}" });
+            TextBlock titleTextBlock = new TextBlock(base.Width - 40, 2, 40, new List<String> { 
+                "** Welcome To FILTER MENU ***", 
+                "P - filter by priority.", 
+                "S - filter by status.", 
+                "R - Reset filters.", 
+                "Q - Quit.", 
+                "======================", 
+                $"Priority Value: {priorityValue}", 
+                $"Status Value: {statusValue}" });
             titleTextBlock.Render();
         }
         public override void readButtonPress()
@@ -59,12 +64,14 @@ namespace ToDoList.Gui
             } while (haveNotMadeAChoice != true);
         }
 
-        private void priorityFilterValueBuilder() {
+        private void priorityFilterValueBuilder()
+        {
             priorityValue++;
-            if (priorityValue > 5) {
+            if (priorityValue > 5)
+            {
                 priorityValue = 1;
             }
-            
+
         }
 
         private void statusFilterValueBuilder()
@@ -75,7 +82,8 @@ namespace ToDoList.Gui
             {
                 statusValue = (TaskStatus)0;
             }
-            else {
+            else
+            {
                 statusValue = (TaskStatus)i;
             }
 

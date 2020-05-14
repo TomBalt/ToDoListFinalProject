@@ -18,8 +18,5 @@ namespace ToDoList.Data
             DataFilePath = @"..\..\..\Data\SavedData.json";
 
         }
-
-        
-
     }
 }

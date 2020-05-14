@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,53 +17,41 @@ namespace ToDoList.BackEnd
         ProgramWindow programWindow;
         HandleMenuPress handleMenuPress;
         bool continueProgram = true;
-       public TodoDataStorage todoDataStorage;  ////////////////////// 
+        public TodoDataStorage todoDataStorage;
         private bool haveNotMadeAChoice = true;
         SortListWindow sortListWindow;
         FilterListWindow filterListWindow;
         List<ToDoTask> todolist;
-        OperationsWithFiles operationsWithFiles;
-       
+
+
 
         public AppControler()
         {
             programWindow = new ProgramWindow();
             handleMenuPress = new HandleMenuPress();
-            
-            todoDataStorage = new TodoDataStorage();  /////////////////////////////
-            
-           
+            todoDataStorage = new TodoDataStorage();
         }
 
         public void StartProgram()
         {
             LoadDataFromFile(todoDataStorage);
-            
-            // todoDataStorage.LoadDataFromFile();
-            // LoadData();
-
             todolist = todoDataStorage.ToDoList;
             sortListWindow = new SortListWindow(todolist, 'S');
             filterListWindow = new FilterListWindow(todolist, 'F');
-            //   todolist.Add(new ToDoTask(2,"new 2")); ///////////////////////////////////////
-            //   todolist.Add(new ToDoTask(3,"new 3")); ///////////////////////////////////////
-            //   todolist.Add(new ToDoTask(4,"new 4")); ///////////////////////////////////////
-            //   todolist[1].Status = "Done";
-
+            checkIfTaskNotExpired(todolist);
             do
-              {
+            {
 
-                  programWindow.Render();
-                  programWindow.PrintTaksList(todolist);
-                  ControlButtonPress(todolist);
-              } while (continueProgram);
-              
-            //save to file;
+                programWindow.Render();
+                programWindow.PrintTaksList(todolist);
+                ControlButtonPress(todolist);
+            } while (continueProgram);
+
         }
 
         public List<ToDoTask> ControlButtonPress(List<ToDoTask> toDoTaskList)
         {
-            handleMenuPress.SetCursorsCordinates(1,toDoTaskList);
+            handleMenuPress.SetCursorsCordinates(1, toDoTaskList.Count);
 
             do
             {
@@ -83,7 +72,6 @@ namespace ToDoList.BackEnd
                     case ConsoleKey.D:
                         haveNotMadeAChoice = false;
                         handleMenuPress.MarkTaskAsDone(toDoTaskList);
-                        //   operationsWithFiles.SaveDataToFile(todoDataStorage);
                         SaveDataToFile(todoDataStorage);
                         break;
                     case ConsoleKey.S:
@@ -108,7 +96,7 @@ namespace ToDoList.BackEnd
             return toDoTaskList;
         }
 
-        public void LoadDataFromFile(TodoDataStorage data)
+        private void LoadDataFromFile(TodoDataStorage data)
         {
             if (File.Exists(data.DataFilePath))
             {
@@ -121,12 +109,27 @@ namespace ToDoList.BackEnd
 
         }
 
-        public void SaveDataToFile(TodoDataStorage data)
+        private void SaveDataToFile(TodoDataStorage data)
         {
             using (StreamWriter file = File.CreateText(data.DataFilePath))
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(file, data.ToDoList);
+            }
+        }
+
+        private void checkIfTaskNotExpired(List<ToDoTask> toDoTasks)
+        {
+
+            DateTime localDate = DateTime.Now;
+
+            foreach (ToDoTask task in toDoTasks)
+            {
+
+                if (task.DeadlineDate < localDate)
+                {
+                    task.Status = TaskStatus.Expired;
+                }
             }
         }
     }
